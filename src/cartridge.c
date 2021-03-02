@@ -24,7 +24,6 @@ int init_cartridge(Cartridge *cart, char *rom_name) {
     fread(cart->rom, cart->rom_size, 1, rom_file);
     fclose(rom_file);
 
-    
     cart->rom_bank_00 = cart->rom;
     cart->rom_bank_01_NN = cart->rom + 0x4000;
     cart->rom_bank_no = 0x01;
@@ -37,8 +36,9 @@ int init_cartridge(Cartridge *cart, char *rom_name) {
 
 void free_cartridge(Cartridge *cart) {
 
-    if (cart->external_ram != NULL) {
-        free(cart->external_ram);
+    // It should be external_ram, when its implemented
+    if (cart->external_ram_bank != NULL) {
+        free(cart->external_ram_bank);
     }
 
     if (cart->rom != NULL) {
