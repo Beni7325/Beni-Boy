@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "stdlib.h": "c",
+        "cartridge.h": "c",
+        "stdio.h": "c",
+        "time.h": "c"
+    }
+}
