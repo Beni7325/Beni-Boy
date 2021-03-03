@@ -1,4 +1,6 @@
+#include <stdio.h>
 #include <stdlib.h>
+#include "./../includes/gb.h"
 #include "./../includes/memory.h"
 
 
@@ -62,4 +64,86 @@ void free_mem(Memory *mem) {
     free(mem->io);
     free(mem->hram);
 
+}
+
+void write_byte(GB *gb, uint16_t addr, uint8_t data) {
+
+    uint8_t *src, key_inputs = 0x0F, new_key_pressed = 0;
+
+    if (addr < 0x8000) {
+        // ROM is read only. Will manage write attempts when I implement MBCs (Memory Bank Controllers)
+    } else if (addr < 0xA000) {
+        gb->mem.vram[addr - 0x8000] = data;
+    } else if (addr < 0xC000) {
+        gb->cart.external_ram_bank[addr - 0xA000] = data;
+    } else if (addr < 0xD000) {
+        gb->mem.wram_0[addr - 0xC000] = data;
+    } else if (addr < 0xE000) {
+        gb->mem.wram_1[addr - 0xD000] = data;
+    } else if (addr < 0xFE00) {
+        if (addr < 0xF000) {
+            gb->mem.wram_0[addr - 0xE000] = data;
+        } else {
+            gb->mem.wram_1[addr - 0xF000] = data;
+        }
+    } else if (addr < 0xFEA0) {
+        gb->mem.oam[addr - 0xFE00] = data;
+    } else if (addr < 0xFF00) {
+        gb->mem.nu[addr - 0xFEA0] = data;
+    } else if (addr < 0xFF80) {
+
+        // For debugging. Prints the byte in the serial transfer data register
+        if (addr == 0xFF02) {
+            printf("%c\n", (char)gb->mem.io[0xFF01]);
+        }
+        gb->mem.io[addr - 0xFF00] = data;
+    } else if (addr < 0xFFFF) {
+        gb->mem.hram[addr - 0xFF80] = data;
+    } else {
+        gb->mem.interr_enable_reg = data;
+    }
+
+}
+
+void write_word(GB *gb, uint16_t addr, uint16_t data) {
+    write_byte(gb, addr, data & 0x00FF);
+    write_byte(gb, addr+1, (data & 0xFF00)>>8);
+}
+
+uint8_t read_byte(GB *gb, uint16_t addr) {
+    if (addr < 0x4000) {
+        return gb->cart.rom_bank_00[addr];
+    } else if (addr < 0x8000) {
+        return gb->cart.rom_bank_01_NN[addr - 0x4000];
+    } else if (addr < 0xA000) {
+        return gb->mem.vram[addr - 0x8000];
+    } else if (addr < 0xC000) {
+        return gb->cart.external_ram_bank[addr - 0xA000];
+    } else if (addr < 0xD000) {
+        return gb->mem.wram_0[addr - 0xC000];
+    } else if (addr < 0xE000) {
+        return gb->mem.wram_1[addr - 0xD000];
+    } else if (addr < 0xFE00) {
+        if (addr < 0xF000) {
+            return gb->mem.wram_0[addr - 0xE000];
+        } else {
+            return gb->mem.wram_1[addr - 0xF000];
+        }
+    } else if (addr < 0xFEA0) {
+        return gb->mem.oam[addr - 0xFE00];
+    } else if (addr < 0xFF00) {
+        return gb->mem.nu[addr - 0xFEA0];
+    } else if (addr < 0xFF80) {
+        return gb->mem.io[addr - 0xFF00];
+    } else if (addr < 0xFFFF) {
+        return gb->mem.hram[addr - 0xFF80];
+    } else {
+        return gb->mem.interr_enable_reg;
+    }
+
+    return 0;
+}
+
+uint16_t read_word(GB *gb, uint16_t addr) {
+    return read_byte(gb, addr+1)<<8 | read_byte(gb, addr);
 }
