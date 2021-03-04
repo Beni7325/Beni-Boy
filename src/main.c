@@ -13,6 +13,10 @@ int main(int argc, char *argv[]) {
     }
 
     init_gb(&gb, argv[1]);
+    int n = 80000000;
+    while (--n) {
+        tick_cpu(&gb);
+    }
     free_gb(&gb);
 
     return 0;

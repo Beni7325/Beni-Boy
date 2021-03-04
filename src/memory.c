@@ -68,8 +68,6 @@ void free_mem(Memory *mem) {
 
 void write_byte(GB *gb, uint16_t addr, uint8_t data) {
 
-    uint8_t *src, key_inputs = 0x0F, new_key_pressed = 0;
-
     if (addr < 0x8000) {
         // ROM is read only. Will manage write attempts when I implement MBCs (Memory Bank Controllers)
     } else if (addr < 0xA000) {
@@ -94,7 +92,7 @@ void write_byte(GB *gb, uint16_t addr, uint8_t data) {
 
         // For debugging. Prints the byte in the serial transfer data register
         if (addr == 0xFF02) {
-            printf("%c\n", (char)gb->mem.io[0xFF01]);
+            printf("%c", (char)gb->mem.io[addr-0xFF01]);
         }
         gb->mem.io[addr - 0xFF00] = data;
     } else if (addr < 0xFFFF) {

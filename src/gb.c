@@ -5,7 +5,9 @@ int init_gb(GB *gb, char *rom_name) {
 
     init_cpu(&gb->cpu);
     init_mem(&gb->mem);
-    init_cartridge(&gb->cart, rom_name);
+    if (init_cartridge(&gb->cart, rom_name) == -1) {
+        return -1;
+    }
 
     return 0; // will handle errors later
 }

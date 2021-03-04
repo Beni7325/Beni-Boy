@@ -2,6 +2,16 @@
 #define CPU_H
 
 #include <stdint.h>
+#include "gb.h"
+
+
+typedef struct GB GB; // Forward declaration
+
+
+typedef enum {
+    EXECUTION,
+    HALT
+} Cpu_State;
 
 
 typedef struct {
@@ -50,11 +60,17 @@ typedef struct {
     uint16_t sp;
     uint16_t pc;
 
+    uint8_t ime;
+    uint8_t int_flag;
+    
     uint8_t remaining_cycles;
+    Cpu_State state;
 
 } Cpu;
 
 
 void init_cpu(Cpu *cpu);
+
+void tick_cpu(GB *gb);
 
 #endif /* CPU_H */

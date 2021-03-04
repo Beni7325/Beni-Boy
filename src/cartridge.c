@@ -9,10 +9,14 @@ uint16_t ext_ram_size[4] = {0, 2048, 8192, 32768};
 
 int init_cartridge(Cartridge *cart, char *rom_name) {
 
-    FILE *rom_file;
+    FILE *rom_file = NULL;
 
 
     rom_file = fopen(rom_name, "rb");
+    if (rom_file == NULL) {
+        perror("Read ROM");
+        return -1;
+    }
 
     // Calculate the size of the rom
     fseek(rom_file, 0, SEEK_END);
