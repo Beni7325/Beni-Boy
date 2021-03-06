@@ -4,12 +4,14 @@
 #include "cpu.h"
 #include "memory.h"
 #include "cartridge.h"
+#include "timer.h"
 
 
 typedef struct GB {
     Cpu cpu;
     Memory mem;
     Cartridge cart;
+    Timer timer;
 } GB;
 
 

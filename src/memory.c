@@ -90,11 +90,35 @@ void write_byte(GB *gb, uint16_t addr, uint8_t data) {
         gb->mem.nu[addr - 0xFEA0] = data;
     } else if (addr < 0xFF80) {
 
+        switch (addr & 0xFF) {
+            case 0x02:
+                printf("%c", (char)gb->mem.io[addr-0xFF01]);
+                return;
+            case 0x04:
+                gb->timer.div = 0;
+                return;
+            case 0x05:
+                gb->timer.tima = data;
+                return;
+            case 0x06:
+                gb->timer.tma = data;
+                return;
+            case 0x07:
+                gb->timer.tac = data;
+                return;
+            case 0x0F:
+                gb->cpu.int_flag = data;
+                return;
+            default:
+                gb->mem.io[addr - 0xFF00] = data;
+                return;
+        }
+
         // For debugging. Prints the byte in the serial transfer data register
         if (addr == 0xFF02) {
-            printf("%c", (char)gb->mem.io[addr-0xFF01]);
+            
         }
-        gb->mem.io[addr - 0xFF00] = data;
+        
     } else if (addr < 0xFFFF) {
         gb->mem.hram[addr - 0xFF80] = data;
     } else {
@@ -132,6 +156,23 @@ uint8_t read_byte(GB *gb, uint16_t addr) {
     } else if (addr < 0xFF00) {
         return gb->mem.nu[addr - 0xFEA0];
     } else if (addr < 0xFF80) {
+
+        switch (addr & 0xFF) {
+            case 0x04: // DIV
+                return gb->timer.div;
+            case 0x05: // TIMA
+                return gb->timer.tima;
+            case 0x06: // TMA
+                return gb->timer.tma;
+            case 0x07: // TAC
+                return gb->timer.tac;
+            case 0x0F: // Int Flag
+                return gb->cpu.int_flag;
+            default:
+                return gb->mem.io[addr - 0xFF00];
+                //return 0xFF;
+        }
+
         return gb->mem.io[addr - 0xFF00];
     } else if (addr < 0xFFFF) {
         return gb->mem.hram[addr - 0xFF80];

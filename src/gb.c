@@ -8,6 +8,7 @@ int init_gb(GB *gb, char *rom_name) {
     if (init_cartridge(&gb->cart, rom_name) == -1) {
         return -1;
     }
+    init_timer(&gb->timer);
 
     return 0; // will handle errors later
 }

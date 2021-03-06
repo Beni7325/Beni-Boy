@@ -23,6 +23,7 @@ uint32_t nop(GB *gb) {
 
 uint32_t ei(GB *gb) {
     // TODO ime bug
+    gb->cpu.set_ime = 1;
     return 0;
 }
 
@@ -37,7 +38,7 @@ uint32_t halt(GB *gb) {
     } else {
         gb->cpu.pc -= 1;
     }*/
-    // TODO ime bug
+    gb->cpu.state = HALT;
     return 0;
 }
 
@@ -205,6 +206,7 @@ uint32_t ret_nc(GB *gb) {
 uint32_t reti(GB *gb) {
     gb->cpu.pc = pop(gb);
     // TODO ime BUG;
+    gb->cpu.set_ime = 1;
     return 0;
 }
 

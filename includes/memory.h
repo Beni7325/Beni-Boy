@@ -40,7 +40,6 @@ void init_mem(Memory *mem);
 
 void free_mem(Memory *mem);
 
-// TODO: Implement these functions. For now these prototypes exist so I can call them from instructions.c
 void write_byte(GB *gb, uint16_t addr, uint8_t data);
 
 void write_word(GB *gb, uint16_t addr, uint16_t data);

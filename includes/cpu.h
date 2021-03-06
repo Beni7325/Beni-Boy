@@ -61,6 +61,7 @@ typedef struct {
     uint16_t pc;
 
     uint8_t ime;
+    uint8_t set_ime;  // Setting ime has a 1 instr delay. This is set in EI and RETI and 1 inst after ime is set
     uint8_t int_flag;
     
     uint8_t remaining_cycles;
