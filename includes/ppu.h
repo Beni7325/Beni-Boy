@@ -2,10 +2,10 @@
 #define PPU_H
 
 #include <stdint.h>
-#include "gb.h"
 
 #define WIDTH 160
 #define HEIGHT 144
+
 
 typedef struct GB GB;
 

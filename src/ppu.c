@@ -1,4 +1,7 @@
-#include "ppu.h"
+#include <stdlib.h>
+#include <string.h>
+#include "./../includes/ppu.h"
+#include "./../includes/gb.h"
 
 
 // Color palette for the GB screen

@@ -9,6 +9,7 @@ int init_gb(GB *gb, char *rom_name) {
         return -1;
     }
     init_timer(&gb->timer);
+    init_ppu(&gb->ppu);
 
     return 0; // will handle errors later
 }
@@ -17,5 +18,6 @@ void free_gb(GB *gb) {
 
     free_mem(&gb->mem);
     free_cartridge(&gb->cart);
+    free_ppu(&gb->ppu);
 
 }

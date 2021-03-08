@@ -1,5 +1,7 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include "./../includes/instructions.h"
+#include "./../includes/interrupts.h"
 #include "./../includes/cpu.h"
 
 
