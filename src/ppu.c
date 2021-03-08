@@ -4,6 +4,16 @@
 #include "./../includes/gb.h"
 
 
+#define LCDC_LCD_ENABLE         0x80
+#define LCDC_WIN_TILEMAP        0x40
+#define LCDC_WIN_ENABLE         0x20
+#define LCDC_BG_WIN_TILEMAP     0x10
+#define LCDC_BG_TILEMAP         0x08
+#define LCDC_OBJ_SIZE           0x04
+#define LCDC_OBJ_ENABLE         0x02
+#define LCDC_BG_WIN_PRIORITY    0x01
+
+
 // Color palette for the GB screen
 static uint32_t colors[4] = {0xFFFFFFFF,0xFFA9A9A9,0xFF696969,0xFF000000};
 

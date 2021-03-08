@@ -4,7 +4,8 @@
 
 
 #define FRAMERATE 59.722
-#define WINDOW_SIZE_MULTIPLIER 6
+#define INSTR_PER_FRAME 70224
+#define WINDOW_SIZE_MULTIPLIER 1
 
 
 int main(int argc, char *argv[]) {
@@ -38,9 +39,11 @@ int main(int argc, char *argv[]) {
 
         timerFps = SDL_GetTicks();
 
-        tick_cpu(&gb);
-        tick_timer(&gb);
-        tick_ppu(&gb);
+        for (size_t c=0; c<INSTR_PER_FRAME; ++c) {
+            tick_cpu(&gb);
+            tick_timer(&gb);
+            tick_ppu(&gb);
+        }
 
         SDL_UpdateTexture(framebuffer , NULL, gb.ppu.screen, WIDTH * sizeof (uint32_t));
         SDL_RenderClear(renderer);

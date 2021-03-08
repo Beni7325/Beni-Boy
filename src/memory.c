@@ -93,6 +93,7 @@ void write_byte(GB *gb, uint16_t addr, uint8_t data) {
         switch (addr & 0xFF) {
             case 0x02:
                 printf("%c", (char)gb->mem.io[addr-0xFF01]);
+                fflush(stdout);
                 return;
             case 0x04:
                 gb->timer.div = 0;
