@@ -109,6 +109,45 @@ void write_byte(GB *gb, uint16_t addr, uint8_t data) {
             case 0x0F:
                 gb->cpu.int_flag = data;
                 return;
+
+            //PPU
+            case 0x40:
+                gb->ppu.lcdc = data;
+                return;
+            case 0x41:
+                gb->ppu.stat = (gb->ppu.stat & 0x83) | (data & 0x7C);
+                return;
+            case 0x42:
+                gb->ppu.scy = data;
+                return;
+            case 0x43:
+                gb->ppu.scx = data;
+                return;
+            case 0x44:
+                /*gb->ppu.ly = 0;
+                gb->ppu.ticks = 0;
+                gb->ppu.state = OAM_SEARCH;*/
+                printf("Write to LY\n");
+                return;
+            case 0x45:
+                gb->ppu.lyc = data;
+                return;
+            case 0x47:
+                gb->ppu.bgp = data;
+                return;
+            case 0x48:
+                gb->ppu.obp0 = data;
+                return;
+            case 0x49:
+                gb->ppu.obp1 = data;
+                return;
+            case 0x4A:
+                gb->ppu.wy = data;
+                return;
+            case 0x4B:
+                gb->ppu.wx = data;
+                return;
+
             default:
                 gb->mem.io[addr - 0xFF00] = data;
                 return;
@@ -168,6 +207,31 @@ uint8_t read_byte(GB *gb, uint16_t addr) {
                 return gb->timer.tac;
             case 0x0F: // Int Flag
                 return gb->cpu.int_flag;
+
+            //PPU
+            case 0x40:
+                return gb->ppu.lcdc;
+            case 0x41:
+                return gb->ppu.stat;
+            case 0x42:
+                return gb->ppu.scy;
+            case 0x43:
+                return gb->ppu.scx;
+            case 0x44:
+                return gb->ppu.ly;
+            case 0x45:
+                return gb->ppu.lyc;
+            case 0x47:
+                return gb->ppu.bgp;
+            case 0x48:
+                return gb->ppu.obp0;
+            case 0x49:
+                return gb->ppu.obp1;
+            case 0x4A:
+                return gb->ppu.wy;
+            case 0x4B:
+                return gb->ppu.wx;
+
             default:
                 return gb->mem.io[addr - 0xFF00];
                 //return 0xFF;

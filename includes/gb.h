@@ -5,6 +5,7 @@
 #include "memory.h"
 #include "cartridge.h"
 #include "timer.h"
+#include "ppu.h"
 
 
 typedef struct GB {
@@ -12,6 +13,7 @@ typedef struct GB {
     Memory mem;
     Cartridge cart;
     Timer timer;
+    PPU ppu;
 } GB;
 
 
