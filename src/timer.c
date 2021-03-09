@@ -3,6 +3,10 @@
 #include "./../includes/timer.h"
 
 
+#define TAC_TIMER_ENABLE    0x04
+#define TAC_CLOCK_SELECT    0x03
+
+
 static uint32_t tima_periods[4] = {CLOCKS_PER_SEC/4096 - 1, CLOCKS_PER_SEC/262144 - 1, CLOCKS_PER_SEC/65536 - 1, CLOCKS_PER_SEC/16384 - 1};
 
 
@@ -23,12 +27,12 @@ void tick_timer(GB *gb) {
 
         gb->timer.cycles += 16;
 
-        if (gb->timer.tac & 0x04) {
-            if (!(gb->timer.cycles & (tima_periods[gb->timer.tac & 0x03]))) {
+        if (gb->timer.tac & TAC_TIMER_ENABLE) { // If the timer is enabled, check if the currently selected timer has overflowed
+            if (!(gb->timer.cycles & (tima_periods[gb->timer.tac & TAC_CLOCK_SELECT]))) {
 
                 ++gb->timer.tima;
  
-                if (!gb->timer.tima) {
+                if (!gb->timer.tima) {  // If it has overflowed, reset it to the value of TMA and request a timer interrupt
                     gb->timer.tima = gb->timer.tma;
                     timer_interrupt(gb);
                 }
