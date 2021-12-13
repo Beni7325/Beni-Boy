@@ -54,4 +54,5 @@ dkms.conf
 .vscode/
 beniboy
 roms/
+bin/
 *.log
